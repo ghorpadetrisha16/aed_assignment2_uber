@@ -20,20 +20,21 @@ import src.UberCar;
  */
 public class AddUberCar extends javax.swing.JFrame {
 
-transient ArrayList<UberCar> uberCars;
+    transient ArrayList<UberCar> uberCars;
 //ImageIcon carPicture = new ImageIcon("carowner1.png");
-transient String fileName;
+    transient String fileName;
+
     /**
      * Creates new form AddUberCar
      */
     public AddUberCar() {
         initComponents();
-uberCars =  new ArrayList<UberCar>();
-fileName = "";
-populateArrayList();
+        uberCars = new ArrayList<UberCar>();
+        fileName = "";
+        populateArrayList();
     }
 
-public void populateArrayList() {
+    public void populateArrayList() {
         try {
             FileInputStream file = new FileInputStream("UberCar.dat");
             ObjectInputStream ipfile = new ObjectInputStream(file);
@@ -213,7 +214,7 @@ public void populateArrayList() {
         // TODO add your handling code here:
     }//GEN-LAST:event_modelNumberActionPerformed
 
-public void saveCarFile() {
+    public void saveCarFile() {
         try {
 
             FileOutputStream file = new FileOutputStream("UberCar.dat");
@@ -231,47 +232,47 @@ public void saveCarFile() {
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    
-    String engineNo = this.engineNo.getText();
-    String licenseplate = this.licensePlate.getText();
-    String manufacturer = this.manufacturer.getText();
-    String manufactureYear = this.manufacturingYear.getSelectedItem().toString();
-    int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
-    int modelNumber = Integer.parseInt(this.modelNumber.getText());
-    String maintenanceExpDate = this.maintenanceExpDate.getText();
-    Boolean availability = this.available.getState();
-    String uberSerialNo = this.uberSerialNumber.getText();
 
-if(!(this.engineNo.getText().trim()).isEmpty()){
-try{
-Integer.parseInt((this.engineNo.getText().trim()));
-}catch(NumberFormatException n){
-JOptionPane.showMessageDialog(null, "Engine Number : Enter Numbers only");
-return;
-}
-}else{
-JOptionPane.showMessageDialog(null, "Enter Engine Number");
-return;
-}
+        String engineNo = this.engineNo.getText();
+        String licenseplate = this.licensePlate.getText();
+        String manufacturer = this.manufacturer.getText();
+        String manufactureYear = this.manufacturingYear.getSelectedItem().toString();
+        int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
+        int modelNumber = Integer.parseInt(this.modelNumber.getText());
+        String maintenanceExpDate = this.maintenanceExpDate.getText();
+        Boolean availability = this.available.getState();
+        String uberSerialNo = this.uberSerialNumber.getText();
 
-if((this.manufacturer.getText().trim()).isEmpty()){
-JOptionPane.showMessageDialog(null, "Enter Manufacturer");
-return;
-}
+        if (!(this.engineNo.getText().trim()).isEmpty()) {
+            try {
+                Integer.parseInt((this.engineNo.getText().trim()));
+            } catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Engine Number : Enter Numbers only");
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter Engine Number");
+            return;
+        }
 
-if((this.manufacturingYear.getSelectedItem().toString().trim()).isEmpty()){
-JOptionPane.showMessageDialog(null, "Enter Manufacture Year");
-return;
-}
+        if ((this.manufacturer.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter Manufacturer");
+            return;
+        }
 
-if((this.maintenanceExpDate.getText().trim()).isEmpty()){
-JOptionPane.showMessageDialog(null, "Enter Maintenance Expiry Date");
-return;
-}
+        if ((this.manufacturingYear.getSelectedItem().toString().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter Manufacture Year");
+            return;
+        }
 
-UberCar uberCar = new UberCar(engineNo, licenseplate, manufacturer, manufactureYear, numberOfSeat, modelNumber, maintenanceExpDate, rootPaneCheckingEnabled, modelNumber, fileName);
-uberCars.add(uberCar);
-saveCarFile();
+        if ((this.maintenanceExpDate.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter Maintenance Expiry Date");
+            return;
+        }
+
+        UberCar uberCar = new UberCar(engineNo, licenseplate, manufacturer, manufactureYear, numberOfSeat, modelNumber, maintenanceExpDate, Boolean.TRUE, modelNumber, (System.currentTimeMillis())+"", "");
+        uberCars.add(uberCar);
+        saveCarFile();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

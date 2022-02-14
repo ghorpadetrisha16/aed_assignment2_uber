@@ -4,18 +4,84 @@
  */
 package ui;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import src.UberCar;
+
 /**
  *
  * @author Trisha
  */
 public class ManageCars extends javax.swing.JFrame {
 
+transient ArrayList<UberCar> uberCars;
+transient String fileName;
+    DefaultTableModel model;
     /**
      * Creates new form ManageCars
      */
     public ManageCars() {
         initComponents();
+uberCars =  new ArrayList<UberCar>();
+fileName = "";
+model = (DefaultTableModel) manageTable.getModel();
+populateArrayList();
+insertDataInTable();
     }
+
+public void populateArrayList() {
+        try {
+            FileInputStream file = new FileInputStream("UberCar.dat");
+            ObjectInputStream ipfile = new ObjectInputStream(file);
+
+            boolean eof = false;
+            while (!eof) {
+                try {
+                    uberCars.add((UberCar) ipfile.readObject());
+                } catch (EOFException eoe) {
+                    eof = true;
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                }
+            }
+            ipfile.close();
+        } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, ioe.getMessage());
+        }
+
+    }
+
+public void saveCarFile() {
+        try {
+
+            FileOutputStream file = new FileOutputStream("UberCar.dat");
+            ObjectOutputStream otFile = new ObjectOutputStream(file);
+            JOptionPane.showMessageDialog(null, uberCars.size());
+            for (int i = 0; i < uberCars.size(); i++) {
+                otFile.writeObject(uberCars.get(i));
+            }
+            otFile.close();
+            JOptionPane.showMessageDialog(null, "Data saved Successfully");
+            this.dispose();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+public void insertDataInTable(){
+for(UberCar car: uberCars){
+model.insertRow(model.getRowCount(), new Object[]{car.getEngineNo(),car.getLicenseplate(),car.getManufacturer(),car.getNumberOfSeat(),car.getModelNumber(),car.getUberSerialNumber(),car.getLocation()});
+}
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,15 +93,35 @@ public class ManageCars extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        manageTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        serialNumberVal = new javax.swing.JTextField();
+        modelNumber = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        manufacturer = new javax.swing.JTextField();
+        engineNo = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        numberOfSeat = new javax.swing.JTextField();
+        uberSerialNumber = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        maintenanceExpDate = new javax.swing.JTextField();
+        available = new java.awt.Checkbox();
+        jLabel5 = new javax.swing.JLabel();
+        licensePlate = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        location = new javax.swing.JComboBox<>();
+        manufacYear = new javax.swing.JTextField();
+        editSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        manageTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -51,13 +137,76 @@ public class ManageCars extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(manageTable);
 
         jButton1.setText("View & Edit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Enter Uber Serial Number :");
 
         jButton2.setText("search");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        modelNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modelNumberActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Manufacturer :");
+
+        jLabel2.setText("Engine Number :");
+
+        manufacturer.setEditable(false);
+
+        engineNo.setEditable(false);
+
+        jLabel8.setText("Manufacturing Year :");
+
+        jLabel3.setText("Number of seats :");
+
+        jLabel9.setText("Uber Serial Number :");
+
+        uberSerialNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uberSerialNumberActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Maintenance Expiry Date :");
+
+        available.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        available.setLabel("Available");
+
+        jLabel5.setText("License Plate :");
+
+        jLabel6.setText("Model Number :");
+
+        jLabel10.setText("Car Location: ");
+
+        location.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Boston             ", "Worcester          ", "Springfield        ", "Cambridge          ", "Lowell             ", "Brockton           ", "New                ", "Quincy             ", "Lynn               ", "Fall               ", "Newton             ", "Somerville         ", "Lawrence           ", "Framingham         ", "Haverhill          ", "Waltham            ", "Malden             ", "Brookline          ", "Weymouth           ", "Taunton            ", "Medford            ", "Chicopee           ", "Peabody            ", "Revere             ", "Methuen            ", "Everett            ", "Attleboro          ", "Arlington          ", "Barnstable         ", "Salem              ", "Beverly            ", "Leominster         ", "Pittsfield         ", "Westfield          ", "Fitchburg          ", "Woburn             ", "Holyoke            ", "Marlborough        ", "Chelsea            ", "Braintree          ", "Franklin           ", "Watertown          ", "Randolph           ", "Lexington          ", "Needham            ", "Gloucester         ", "Norwood            ", "Wellesley          ", "Agawam             ", "Saugus             ", "Bridgewater        ", "West               ", "Northampton        ", "Melrose            ", "Burlington         ", "Danvers            ", "Milton             ", "Wakefield          ", "Belmont            ", "Milford            ", "Dedham             ", "Reading            ", "Wilmington         ", "Stoneham           ", "Winchester         ", "Gardner            ", "Marblehead         ", "Amherst            ", "Newburyport        ", "Winthrop           ", "Somerset           ", "Amesbury           ", "Greenfield         ", "Southbridge        ", "Abington           ", "Longmeadow         ", "Easthampton        ", "Hudson             ", "Swampscott         ", "Lynnfield          ", "North              ", "Palmer             ", "Webster            ", "South              ", "Holbrook           ", "Maynard            ", "Hull               ", "Andover            " }));
+
+        manufacYear.setEditable(false);
+        manufacYear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manufacYearActionPerformed(evt);
+            }
+        });
+
+        editSave.setText("save");
+        editSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -66,37 +215,223 @@ public class ManageCars extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1053, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(available, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(maintenanceExpDate, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                            .addComponent(engineNo)
+                            .addComponent(numberOfSeat))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(licensePlate, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel10))
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(modelNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                                    .addComponent(location, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(manufacturer, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(uberSerialNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(manufacYear)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
+                        .addGap(104, 104, 104)
                         .addComponent(jLabel1)
-                        .addGap(70, 70, 70)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(serialNumberVal, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(502, 502, 502)
-                        .addComponent(jButton1)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                        .addGap(507, 507, 507)
+                        .addComponent(jButton1)
+                        .addGap(70, 70, 70)
+                        .addComponent(editSave))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1053, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jButton1)
-                .addGap(70, 70, 70))
+                    .addComponent(serialNumberVal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(available, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(engineNo)
+                    .addComponent(jLabel5)
+                    .addComponent(licensePlate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(numberOfSeat)
+                    .addComponent(jLabel6)
+                    .addComponent(modelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(manufacYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(maintenanceExpDate)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(editSave))
+                        .addGap(34, 34, 34))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(uberSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(133, 133, 133))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int rowNumner = manageTable.getSelectedRow();
+UberCar car = uberCars.get(rowNumner);
+this.engineNo.setText(car.getEngineNo()+"");
+this.licensePlate.setText(car.getLicenseplate()+"");
+this.manufacturer.setText(car.getManufacturer()+"");
+this.manufacYear.setText(car.getManufactureYear()+"");
+this.numberOfSeat.setText(car.getNumberOfSeat()+"");
+this.modelNumber.setText(car.getModelNumber()+"");
+this.maintenanceExpDate.setText(car.getMaintenanceExpDate()+"");
+if(car.getAvailability()) this.available.setState(Boolean.TRUE);
+else this.available.setState(Boolean.FALSE);
+this.uberSerialNumber.setText(car.getUberSerialNumber()+"");
+//Calendar cal = Calendar.getInstance();
+//cal.setTimeInMillis(car.getCatlogUpdateDatetime()+"");
+//this.catlogUpdateDatetime.setText(car.getCatlogUpdateDatetime()+"");
+//if(car.getLocation().equals(""))
+
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void modelNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modelNumberActionPerformed
+
+    private void uberSerialNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uberSerialNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_uberSerialNumberActionPerformed
+
+    private void manufacYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manufacYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_manufacYearActionPerformed
+
+    private synchronized void deleteRecord(String engineNo) {
+        for (UberCar ucar : uberCars) {
+            if (ucar.getEngineNo().trim().equals(engineNo)) {
+                uberCars.remove(ucar);
+            }
+        }
+    }
+
+    private void editSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSaveActionPerformed
+        // TODO add your handling code here:
+        int rowNumner = manageTable.getSelectedRow();
+        UberCar car = uberCars.get(rowNumner);
+        String manufactureYear = car.getManufactureYear();
+//remove entry from file
+deleteRecord(this.engineNo.getText().trim());
+
+        //uberCars.remove(manageTable.getSelectedRow());
+//save data as a new record in file on Edit-Save
+        String engineNo = this.engineNo.getText();
+        String licenseplate = this.licensePlate.getText();
+        String manufacturer = this.manufacturer.getText();
+        int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
+        int modelNumber = Integer.parseInt(this.modelNumber.getText());
+        String maintenanceExpDate = this.maintenanceExpDate.getText();
+        Boolean availability = this.available.getState();
+        String uberSerialNo = this.uberSerialNumber.getText();
+        String location = this.location.getSelectedIndex()+"";
+
+        if (!(this.engineNo.getText().trim()).isEmpty()) {
+            try {
+                Integer.parseInt((this.engineNo.getText().trim()));
+            } catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Engine Number : Enter Numbers only");
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter Engine Number");
+            return;
+        }
+
+        if ((this.manufacturer.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter Manufacturer");
+            return;
+        }
+
+        if ((this.maintenanceExpDate.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter Maintenance Expiry Date");
+            return;
+        }
+
+        UberCar uberCar = new UberCar(engineNo, licenseplate, manufacturer, manufactureYear, numberOfSeat, modelNumber, maintenanceExpDate, Boolean.TRUE, modelNumber, (System.currentTimeMillis()) + "", location);
+        uberCars.add(uberCar);
+        saveCarFile();
+    }//GEN-LAST:event_editSaveActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+while(model.getRowCount() != 0){
+model.removeRow(0);
+}
+//reset editable fields
+this.engineNo.setText("");
+this.licensePlate.setText("");
+this.manufacturer.setText("");
+this.manufacYear.setText("");
+this.numberOfSeat.setText("");
+this.modelNumber.setText("");
+this.maintenanceExpDate.setText("");
+this.available.setState(Boolean.FALSE);
+this.uberSerialNumber.setText("");
+this.location.setSelectedIndex(0);
+
+        for (UberCar car : uberCars) {
+            if (car.getUberSerialNumber() == Integer.parseInt(this.serialNumberVal.getText().trim())) {
+            model.fireTableDataChanged();
+            model.insertRow(model.getRowCount(), new Object[]{car.getEngineNo(),car.getLicenseplate(),car.getManufacturer(),car.getNumberOfSeat(),car.getModelNumber(),car.getUberSerialNumber(),car.getLocation()});
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,11 +469,31 @@ public class ManageCars extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Checkbox available;
+    private javax.swing.JButton editSave;
+    private javax.swing.JTextField engineNo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField licensePlate;
+    private javax.swing.JComboBox<String> location;
+    private javax.swing.JTextField maintenanceExpDate;
+    private javax.swing.JTable manageTable;
+    private javax.swing.JTextField manufacYear;
+    private javax.swing.JTextField manufacturer;
+    private javax.swing.JTextField modelNumber;
+    private javax.swing.JTextField numberOfSeat;
+    private javax.swing.JTextField serialNumberVal;
+    private javax.swing.JTextField uberSerialNumber;
     // End of variables declaration//GEN-END:variables
 }

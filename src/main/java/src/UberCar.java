@@ -18,11 +18,13 @@ public class UberCar implements Serializable {
     int modelNumber;
     String maintenanceExpDate;
 
+
     Boolean availability;
     int uberSerialNumber;
     String catlogUpdateDatetime;
+    String location;
 
-    public UberCar(String engineNo, String licenseplate, String manufacturer, String manufactureYear, int numberOfSeat, int modelNumber, String maintenanceExpDate, Boolean availability, int uberSerialNumber, String catlogUpdateDatetime) {
+    public UberCar(String engineNo, String licenseplate, String manufacturer, String manufactureYear, int numberOfSeat, int modelNumber, String maintenanceExpDate, Boolean availability, int uberSerialNumber, String catlogUpdateDatetime, String location) {
         this.engineNo = engineNo;
         this.licenseplate = licenseplate;
         this.manufacturer = manufacturer;
@@ -33,6 +35,7 @@ public class UberCar implements Serializable {
         this.availability = availability;
         this.uberSerialNumber = uberSerialNumber;
         this.catlogUpdateDatetime = catlogUpdateDatetime;
+        this.location = location;
     }
 
     public String getEngineNo() {
@@ -115,6 +118,14 @@ public class UberCar implements Serializable {
         this.catlogUpdateDatetime = catlogUpdateDatetime;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public boolean equals(UberCar uberCar) {
         return (this.engineNo.equals(uberCar.engineNo)
                 && this.licenseplate.equals(uberCar.licenseplate)
@@ -125,6 +136,7 @@ public class UberCar implements Serializable {
                 && this.maintenanceExpDate.equals(uberCar.maintenanceExpDate)
                 && this.availability.equals(uberCar.availability)
                 && this.uberSerialNumber == (uberCar.uberSerialNumber)
-                && this.catlogUpdateDatetime.equals(uberCar.catlogUpdateDatetime));
+                && this.catlogUpdateDatetime.equals(uberCar.catlogUpdateDatetime)
+                && this.location.equals(uberCar.location));
     }
 }
