@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import src.UberCar;
 
@@ -70,7 +71,6 @@ public class AddUberCar extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         numberOfSeat = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        maintenanceExpDate = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         licensePlate = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -83,8 +83,13 @@ public class AddUberCar extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         available = new java.awt.Checkbox();
         manufacturingYear = new javax.swing.JComboBox<>();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jButton2 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 255, 255));
+        setPreferredSize(new java.awt.Dimension(1300, 600));
 
         jLabel1.setText("Engine Number :");
 
@@ -126,56 +131,75 @@ public class AddUberCar extends javax.swing.JFrame {
 
         manufacturingYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022" }));
 
+        jButton2.setText("Go Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setBackground(new java.awt.Color(204, 255, 255));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 204, 204));
+        jLabel6.setText("Enter Car Details");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(112, 112, 112)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(11, 11, 11))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numberOfSeat)
+                            .addComponent(engineNo))
+                        .addGap(71, 71, 71))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(numberOfSeat, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                            .addComponent(engineNo)
-                            .addComponent(maintenanceExpDate))
-                        .addGap(71, 71, 71)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(available, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(88, 88, 88)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(available, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(licensePlate, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                     .addComponent(modelNumber))
                 .addGap(77, 77, 77)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9))
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(uberSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(manufacturingYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(manufacturer, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel9))
+                            .addGap(63, 63, 63)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(uberSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(manufacturingYear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jButton2))
                 .addGap(87, 87, 87))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(526, 526, 526)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(96, 96, 96)
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(engineNo)
@@ -191,16 +215,27 @@ public class AddUberCar extends javax.swing.JFrame {
                     .addComponent(modelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(manufacturingYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(maintenanceExpDate)
-                    .addComponent(jLabel9)
-                    .addComponent(uberSerialNumber)
-                    .addComponent(available, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
-                .addGap(83, 83, 83)
-                .addComponent(jButton1)
-                .addGap(66, 66, 66))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel9)
+                                    .addComponent(uberSerialNumber))
+                                .addGap(198, 198, 198))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(available, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(65, 65, 65))))
         );
 
         pack();
@@ -219,7 +254,7 @@ public class AddUberCar extends javax.swing.JFrame {
 
             FileOutputStream file = new FileOutputStream("UberCar.dat");
             ObjectOutputStream otFile = new ObjectOutputStream(file);
-            JOptionPane.showMessageDialog(null, uberCars.size());
+            //JOptionPane.showMessageDialog(null, uberCars.size());
             for (int i = 0; i < uberCars.size(); i++) {
                 otFile.writeObject(uberCars.get(i));
             }
@@ -239,10 +274,11 @@ public class AddUberCar extends javax.swing.JFrame {
         String manufactureYear = this.manufacturingYear.getSelectedItem().toString();
         int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
         int modelNumber = Integer.parseInt(this.modelNumber.getText());
-        String maintenanceExpDate = this.maintenanceExpDate.getText();
+        Date maintenanceExpDate = this.jDateChooser1.getDate();
         Boolean availability = this.available.getState();
-        String uberSerialNo = this.uberSerialNumber.getText();
+        int uberSerialNo = Integer.parseInt(this.uberSerialNumber.getText());
 
+        //Null and data type validation Start
         if (!(this.engineNo.getText().trim()).isEmpty()) {
             try {
                 Integer.parseInt((this.engineNo.getText().trim()));
@@ -252,6 +288,11 @@ public class AddUberCar extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Enter Engine Number");
+            return;
+        }
+
+        if ((this.licensePlate.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter License Plate");
             return;
         }
 
@@ -265,15 +306,69 @@ public class AddUberCar extends javax.swing.JFrame {
             return;
         }
 
-        if ((this.maintenanceExpDate.getText().trim()).isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter Maintenance Expiry Date");
+        if (!(this.numberOfSeat.getText().trim()).isEmpty()) {
+            try {
+                Integer.parseInt((this.numberOfSeat.getText().trim()));
+            } catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Number of Seats : Enter Numbers only");
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter Number of Seats");
             return;
         }
 
-        UberCar uberCar = new UberCar(engineNo, licenseplate, manufacturer, manufactureYear, numberOfSeat, modelNumber, maintenanceExpDate, Boolean.TRUE, modelNumber, (System.currentTimeMillis())+"", "");
+        if (!(this.modelNumber.getText().trim()).isEmpty()) {
+            try {
+                Integer.parseInt((this.modelNumber.getText().trim()));
+            } catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Model Number : Enter Numbers only");
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter Model Number");
+            return;
+        }
+
+        if ((this.jDateChooser1.getDate().toString()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter License Plate");
+            return;
+        }
+
+        if ((this.uberSerialNumber.getText().trim()).isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter License Plate");
+            return;
+        }
+        //Null and data type validation End
+
+        //Uniqueness Validation Start
+        for (UberCar car : uberCars) {
+            if (this.engineNo.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.engineNo.getText().trim() == (car.getEngineNo())) {
+                JOptionPane.showMessageDialog(null, "Enter Unique Engine Number.");
+                return;
+            }
+
+            if (this.licensePlate.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.licensePlate.getText().trim() == (car.getEngineNo())) {
+                JOptionPane.showMessageDialog(null, "Enter Unique License Plate Details.");
+                return;
+            }
+
+            if (this.uberSerialNumber.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.uberSerialNumber.getText().trim() == (car.getEngineNo())) {
+                JOptionPane.showMessageDialog(null, "Enter Unique Uber Serial Number.");
+                return;
+            }
+        }
+        //Uniqueness Validation End
+
+        UberCar uberCar = new UberCar(engineNo, licenseplate, manufacturer, manufactureYear, numberOfSeat, modelNumber, maintenanceExpDate, Boolean.TRUE, uberSerialNo, (System.currentTimeMillis()) + "", "");
         uberCars.add(uberCar);
         saveCarFile();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,16 +409,18 @@ public class AddUberCar extends javax.swing.JFrame {
     private java.awt.Checkbox available;
     private javax.swing.JTextField engineNo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField licensePlate;
-    private javax.swing.JTextField maintenanceExpDate;
     private javax.swing.JTextField manufacturer;
     private javax.swing.JComboBox<String> manufacturingYear;
     private javax.swing.JTextField modelNumber;

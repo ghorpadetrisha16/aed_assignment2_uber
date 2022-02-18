@@ -1,6 +1,7 @@
 package src;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -16,7 +17,7 @@ public class UberCar implements Serializable {
     String manufactureYear;
     int numberOfSeat;
     int modelNumber;
-    String maintenanceExpDate;
+    Date maintenanceExpDate;
 
 
     Boolean availability;
@@ -24,7 +25,7 @@ public class UberCar implements Serializable {
     String catlogUpdateDatetime;
     String location;
 
-    public UberCar(String engineNo, String licenseplate, String manufacturer, String manufactureYear, int numberOfSeat, int modelNumber, String maintenanceExpDate, Boolean availability, int uberSerialNumber, String catlogUpdateDatetime, String location) {
+    public UberCar(String engineNo, String licenseplate, String manufacturer, String manufactureYear, int numberOfSeat, int modelNumber, Date maintenanceExpDate, Boolean availability, int uberSerialNumber, String catlogUpdateDatetime, String location) {
         this.engineNo = engineNo;
         this.licenseplate = licenseplate;
         this.manufacturer = manufacturer;
@@ -86,11 +87,11 @@ public class UberCar implements Serializable {
         this.modelNumber = modelNumber;
     }
 
-    public String getMaintenanceExpDate() {
+    public Date getMaintenanceExpDate() {
         return maintenanceExpDate;
     }
 
-    public void setMaintenanceExpDate(String maintenanceExpDate) {
+    public void setMaintenanceExpDate(Date maintenanceExpDate) {
         this.maintenanceExpDate = maintenanceExpDate;
     }
 
