@@ -268,15 +268,7 @@ public class AddUberCar extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String engineNo = this.engineNo.getText();
-        String licenseplate = this.licensePlate.getText();
-        String manufacturer = this.manufacturer.getText();
-        String manufactureYear = this.manufacturingYear.getSelectedItem().toString();
-        int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
-        int modelNumber = Integer.parseInt(this.modelNumber.getText());
-        Date maintenanceExpDate = this.jDateChooser1.getDate();
-        Boolean availability = this.available.getState();
-        int uberSerialNo = Integer.parseInt(this.uberSerialNumber.getText());
+        
 
         //Null and data type validation Start
         if (!(this.engineNo.getText().trim()).isEmpty()) {
@@ -331,29 +323,44 @@ public class AddUberCar extends javax.swing.JFrame {
         }
 
         if ((this.jDateChooser1.getDate().toString()).isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter License Plate");
+            JOptionPane.showMessageDialog(null, "Enter Maintenance Expiry Date");
             return;
         }
 
-        if ((this.uberSerialNumber.getText().trim()).isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Enter License Plate");
+        if (!(this.uberSerialNumber.getText().trim()).isEmpty()) {
+            try {
+                Integer.parseInt((this.uberSerialNumber.getText().trim()));
+            } catch (NumberFormatException n) {
+                JOptionPane.showMessageDialog(null, "Uber Serial Number : Enter Numbers only");
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Enter Uber Serial Number");
             return;
         }
         //Null and data type validation End
-
+        String engineNo = this.engineNo.getText();
+        String licenseplate = this.licensePlate.getText();
+        String manufacturer = this.manufacturer.getText();
+        String manufactureYear = this.manufacturingYear.getSelectedItem().toString();
+        int numberOfSeat = Integer.parseInt(this.numberOfSeat.getText());
+        int modelNumber = Integer.parseInt(this.modelNumber.getText());
+        Date maintenanceExpDate = this.jDateChooser1.getDate();
+        Boolean availability = this.available.getState();
+        int uberSerialNo = Integer.parseInt(this.uberSerialNumber.getText());
         //Uniqueness Validation Start
         for (UberCar car : uberCars) {
-            if (this.engineNo.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.engineNo.getText().trim() == (car.getEngineNo())) {
+            if (this.engineNo.getText().trim().equalsIgnoreCase(car.getEngineNo())) {
                 JOptionPane.showMessageDialog(null, "Enter Unique Engine Number.");
                 return;
             }
 
-            if (this.licensePlate.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.licensePlate.getText().trim() == (car.getEngineNo())) {
+            if (this.licensePlate.getText().trim().equalsIgnoreCase(car.getLicenseplate())) {
                 JOptionPane.showMessageDialog(null, "Enter Unique License Plate Details.");
                 return;
             }
 
-            if (this.uberSerialNumber.getText().trim().equalsIgnoreCase(car.getEngineNo()) || this.uberSerialNumber.getText().trim() == (car.getEngineNo())) {
+            if (uberSerialNo == (car.getUberSerialNumber())) {
                 JOptionPane.showMessageDialog(null, "Enter Unique Uber Serial Number.");
                 return;
             }

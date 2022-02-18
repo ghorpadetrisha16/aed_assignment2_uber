@@ -454,7 +454,7 @@ public class ManageCars extends javax.swing.JFrame {
         //Null and data type validation End
 
         //Uniqueness Validation Start
-if ((Integer.parseInt(this.uberSerialNumber.getText().trim()) == (car.getUberSerialNumber()))) {
+        if (!(Integer.parseInt(this.uberSerialNumber.getText().trim()) == (car.getUberSerialNumber()))) {
             for (UberCar tempCar : uberCars) {
                 if (this.uberSerialNumber.getText().trim().equalsIgnoreCase(tempCar.getEngineNo()) || this.uberSerialNumber.getText().trim() == (tempCar.getEngineNo())) {
                     JOptionPane.showMessageDialog(null, "Enter Unique Uber Serial Number.");
@@ -462,8 +462,8 @@ if ((Integer.parseInt(this.uberSerialNumber.getText().trim()) == (car.getUberSer
                 }
             }
         }
-        //Uniqueness Validation End
 
+        //Uniqueness Validation End
 //remove entry from file
         deleteRecord(this.engineNo.getText().trim());
 
@@ -518,7 +518,7 @@ if ((Integer.parseInt(this.uberSerialNumber.getText().trim()) == (car.getUberSer
         deleteRecord(car.getEngineNo());
         model.setRowCount(0);
         insertDataInTable();
-saveCarFile();
+        saveCarFile();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
